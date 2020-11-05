@@ -106,7 +106,7 @@ function build(twidth, theight) {
             let font = "Monaco";
             if ("ÐÝÞðýþ¼½¾@¹²³".includes(c)) {
                 font = "Noto Sans";
-            } else if ("⋅⸬◇⥾☥⚲⨯".includes(c)) {
+            } else if ("⋅⸬◇⥾☥⚲⨯Δ∇".includes(c)) {
                 font = "Segoe UI Symbol";
             } else if ("⧲⧳".includes(c)) {
                 font = "Cambria";
@@ -118,7 +118,8 @@ function build(twidth, theight) {
             if (c == '⥾') { c = "♈︎"; size *= 0.8; width *= 0.9; }
             if (c == '☥') size *= 1.3;
             if (c == 'Ω' || c == '♪') size *= 1.2;
-            if (c == '◇' || c == '♦') size *= 0.8;
+            if (c == '◇') size *= 0.8;
+            if (c == '♦') size *= 0.85;
             if (c == 'ϟ') { y -= 0.15; size *= 1.1; }
             if (c == '⧲' || c == '⧳') y -= 0.1;
             if (c == '○' || c == '●' || c == '¿') y -= 0.065;
@@ -134,13 +135,22 @@ function build(twidth, theight) {
                     let data = ctx.getImageData(0, 0, twidth, theight);
                     let sum = data.data.reduce((a, b) => a + (b < 128 ? b : (255-b)));
                     if (sum < best[2]) best = [dx, dy, sum];
-                    ctx.clearRect(0, 0, theight*2, theight*2);
+                    ctx.clearRect(0, 0, twidth*2, theight*2);
                 }
+            }
+
+            if (0) {
+                // background color, for testing glyph alignment
+                ctx.fillStyle = (i+j)%2 ? "#000" : "#444";
+                ctx.fillRect(0, 0, twidth, theight);
+                ctx.fillStyle = (i+j)%2 ? "#009" : "#44c";
+                ctx.fillRect(0, theight*0.37, twidth, theight*0.43);
+                ctx.fillStyle = "white";
             }
 
             ctx.fillText(c, x*twidth+best[0]/10, y*theight+best[1]/10, width);
             ctx.putImageData(ctx.getImageData(0, 0, twidth, theight), i*twidth, j*theight);
-            ctx.clearRect(0, 0, theight*2, theight*2);
+            ctx.clearRect(0, 0, twidth*2, theight*2);
         }
     }
     return canvas;

@@ -4,15 +4,15 @@ Tools to generate font/graphic tiles for Brogue CE.
 
 ## Fonts
 
-Make sure you have installed the following fonts:
+Make sure you have the following fonts installed:
 
-- Noto Sans
 - Monaco
+- Noto Sans
 - Consolas
 - Cambria
 - Segoe UI Symbol
 
-Then open `canvas_fonts/generate font assets.htm` in Chrome on Linux.
+Then open `canvas_fonts/generate_font_tiles.htm` in a web browser. Note that different browsers will give slightly different results on different operating systems. For instance, Firefox on Windows will give bolder characters than Chrome on Linux. Try them and choose the one you prefer.
 
 Click on one of the suggested versions. The page will be busy for about a minute.
 
@@ -28,7 +28,7 @@ Then each glyph is drawn onto the canvas at several possible non-integer coordin
 
 ## Graphics
 
-Open `vector_graphics/generate tile assets.htm` in Chrome. To avoid "cross-origin" errors, you will need to open the html page through an http server, for example with:
+Open `vector_graphics/generate_graphics.htm` in a web browser. To avoid "cross-origin" errors, you will need to open the html page through an http server, for example with:
 
 - `npx serve` (if you have node.js) or
 - `python -m http.server`
@@ -43,9 +43,9 @@ Finally, use optipng to reduce file size: `optipng *.png`
 
 ### How it works
 
-Brogue CE's graphic tiles, originally by Oryx, have been re-drawn in Inkscape, adding some fine details and taking care to align edges as much as possible with a 256x232 grid (which is the size of the original `tiles-10.png`). Then the SVG was exported as PNG with size 2048x1856.
+Brogue CE's graphic tiles, originally by Oryx, have been re-drawn in Inkscape, adding some fine details and taking care to align edges as much as possible with a 256x232 grid (which is the size of the original `tiles-10.png`).
 
-The JS code processes each tile separately:
+Then the SVG is rasterized in a web browser with a `canvas` element. The JS code processes each tile separately:
 
 - Decide if it must stretch the tile to fill the space (walls, doors) or preserve aspect ratio (monsters, objects). The latter allows up to 10% stretch in either direction.
 - Try several possible pixel alignments before downscaling:
