@@ -131,7 +131,7 @@ function build(twidth, theight) {
             let best = [0, 0, 1e20];
             for (let dx = -5; dx < 5; dx++) {
                 for (let dy = -5; dy < 5; dy++) {
-                    ctx.fillText(c, x*twidth+dx/10, y*theight+dy/10, twidth*0.9);
+                    ctx.fillText(c, x*twidth+dx/10, y*theight+dy/10, width);
                     let data = ctx.getImageData(0, 0, twidth, theight);
                     let sum = data.data.reduce((a, b) => a + (b < 128 ? b : (255-b)));
                     if (sum < best[2]) best = [dx, dy, sum];
