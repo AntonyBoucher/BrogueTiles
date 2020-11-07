@@ -242,12 +242,12 @@
        inkscape:collect="always"
        xlink:href="#linearGradient2496"
        id="radialGradient2498"
-       cx="31.816151"
-       cy="57.811459"
-       fx="31.816151"
-       fy="57.811459"
+       cx="31.860809"
+       cy="57.811031"
+       fx="31.860809"
+       fy="57.811031"
        r="1.785938"
-       gradientTransform="matrix(1.0000014,-4.0523503e-6,5.6916163e-6,1.4078975,-3.7676775e-4,-23.845595)"
+       gradientTransform="matrix(1.0370365,-3.5343245e-7,5.433039e-7,1.6296298,-1.1585611,-36.663691)"
        gradientUnits="userSpaceOnUse" />
     <filter
        inkscape:collect="always"
@@ -271,10 +271,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.828427"
-     inkscape:cx="107.90384"
-     inkscape:cy="123.31826"
+     inkscape:cx="147.49682"
+     inkscape:cy="119.50225"
      inkscape:document-units="px"
-     inkscape:current-layer="svg8"
+     inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
      showgrid="false"
      units="px"
@@ -330,7 +330,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -7071,12 +7071,12 @@
          sodipodi:nodetypes="ccccccc" />
     </g>
     <g
-       id="g2038">
+       id="g2041">
       <path
          sodipodi:nodetypes="ccccccccccccccc"
          inkscape:connector-curvature="0"
          id="path2490"
-         d="m 33.205208,55.033335 -0.438216,0.04134 c -0.653329,1.342686 -1.364014,0.93247 -1.951302,-0.190169 l -0.256315,0.148828 c 0.964465,1.491195 0.666264,2.064559 -0.454753,1.885157 l -0.07441,0.363801 c 1.857271,0.02912 0.499775,1.024413 0.132292,1.5875 l 0.132291,0.396875 c 1.149327,-1.194481 1.387737,-0.827438 1.322917,0.926042 l 0.388606,0.01654 c -0.0037,-0.814689 -0.127294,-2.07269 1.331186,-1.207161 L 33.552478,58.7127 c -0.686407,-0.611232 -1.639471,-1.327128 0.04961,-1.95957 l -0.190169,-0.223243 c -1.192185,0.519651 -1.294212,-0.04487 -0.206706,-1.496549 z"
+         d="m 32.766992,55.074675 c -0.653329,1.342686 -1.609568,0.909084 -2.196856,-0.213555 l -0.01076,0.172214 c 0.75399,1.374265 0.748115,1.819005 -0.454753,1.885157 l -0.249806,0.118247 c 1.87584,0.314915 0.924624,1.483449 0.284302,2.020143 l -0.03141,0.221479 c 1.077161,-0.720539 1.664104,-0.199109 1.615243,1.078052 l 0.131359,-0.158856 c -0.0037,-0.814689 0.292564,-1.592347 1.615481,-1.327764 h 0.264583 c -0.837391,-0.4682 -1.960299,-1.343712 0.11327,-2.256979 l -0.330486,-0.01277 c -1.133719,0.250711 -1.013579,-0.96862 -0.469828,-1.694461 z"
          style="opacity:1;fill:url(#radialGradient2498);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke" />
       <rect
          y="59.26667"
@@ -7142,8 +7142,8 @@
          id="rect2518"
          style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke" />
       <rect
-         y="57.150002"
-         x="32.014584"
+         y="56.885418"
+         x="32.279167"
          height="0.26458332"
          width="0.26458332"
          id="rect2520"
@@ -7177,8 +7177,8 @@
          id="rect2528"
          style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke" />
       <rect
-         y="58.472919"
-         x="30.427082"
+         y="58.472916"
+         x="30.956249"
          height="0.26458332"
          width="0.26458332"
          id="rect2530"
