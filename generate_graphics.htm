@@ -21,7 +21,7 @@ canvas, img {
 </style>
 </head>
 <body>
-<p>This page uses a VERY SLOW algorithm for sharpening. Please be patient! It takes ~20 minutes to complete.</p>
+<p>This page uses a VERY SLOW algorithm for sharpening. Please be patient! It takes ~2 minutes to complete.</p>
 <p>Choose aspect ratio (sharp, slow):
     <span class="choice" onclick="generate('default',true)">Default</span>
     <span class="choice" onclick="generate('16:9',true)">16:9</span>
@@ -128,39 +128,33 @@ function Downscale(idata, sw, sh, dw, dh, dx1, dx2, dx3, dy1, dy2, dy3) {
 
 function Resize(idata, sw, sh, dw, dh, subpixel) {
     const step = 0.1; // pixels
-    const choices = [];
-    for (a = -5; a <= 5; a++)
-        for (b = -10; b <= 10; b++)
-            for (c = -5; c <= 5; c++)
-                choices.push([a,b,c]);
+    let shifts = [0, 0, 0, 0, 0, 0, 1e20];
 
-    // find best horizontal shifts
-    let hshifts = [0, 0, 0, 1e20];
-    if (subpixel)
-    for (shifts of choices) {
-        const resized = Downscale(idata, sw, sh, dw, dh,
-            shifts[0]*step, shifts[1]*step, shifts[2]*step,
-            0, 0, 0);
-        const sum = ComputeSum(resized);
-        if (sum < hshifts[3]) hshifts = [shifts[0], shifts[1], shifts[2], sum];
-    }
-
-    // find best vertical shifts
-    let vshifts = [0, 0, 0, 1e20];
-    if (subpixel)
-    for (shifts of choices) {
-        const resized = Downscale(idata, sw, sh, dw, dh,
-            hshifts[0]*step, hshifts[1]*step, hshifts[2]*step,
-            shifts[0]*step, shifts[1]*step, shifts[2]*step)
-        const sum = ComputeSum(resized);
-        if (sum < vshifts[3]) vshifts = [shifts[0], shifts[1], shifts[2], sum];
+    // search for the best displacements
+    if (subpixel) {
+        for (let iter = 0; iter < 10; iter++) {
+            const bestSum = shifts[6];
+            for (let idx = 0; idx < 6; idx++) {
+                const m = (idx == 1 || idx == 4) ? 10 : 5;
+                for (let shift = -m; shift <= m; shift++) {
+                    let newShifts = [...shifts];
+                    newShifts[idx] = shift;
+                    const resized = Downscale(idata, sw, sh, dw, dh,
+                        newShifts[0]*step, newShifts[1]*step, newShifts[2]*step,
+                        newShifts[3]*step, newShifts[4]*step, newShifts[5]*step)
+                    newShifts[6] = ComputeSum(resized);
+                    if (newShifts[6] < shifts[6]) shifts = newShifts;
+                }
+            }
+            if (shifts[6] == bestSum) break; // no more improvement is possible
+        }
     }
 
     return  ToImageData(dw, dh,
                 Sharpen(dw, dh,
                     Downscale(idata, sw, sh, dw, dh,
-                        hshifts[0]*step, hshifts[1]*step, hshifts[2]*step,
-                        vshifts[0]*step, vshifts[1]*step, vshifts[2]*step)));
+                        shifts[0]*step, shifts[1]*step, shifts[2]*step,
+                        shifts[3]*step, shifts[4]*step, shifts[5]*step)));
 }
 
 function Noise(w, h) {
@@ -203,12 +197,14 @@ function Noise(w, h) {
 }
 
 function generate(aspectratio, subpixel) {
+    const startTime = Date.now();
     for (let size = 1; size <= 15; size++) {
         let p = document.createElement("p");
         p.innerText = `Size ${size}:`;
         p.appendChild(build(size, aspectratio, subpixel));
         document.body.appendChild(p);
     }
+    console.log('Duration:', Date.now() - startTime, 'ms');
 }
 
 function build(sizeIndex, aspectRatio, subPixelPositioning) {
