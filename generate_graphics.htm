@@ -82,11 +82,11 @@ function ComputeSum(vector) {
 
 function Downscale(idata, sw, sh, dw, dh, dx1, dx2, dx3, dy1, dy2, dy3) {
     const x1 = Math.round((1 + dx1) * sw / dw);
-    const x2 = Math.round((dw/2 + dx1) * sw / dw);
-    const x3 = Math.round((dw - 1 + dx2) * sw / dw);
+    const x2 = Math.round((dw/2 + (dx1+dx3)/2 + dx2) * sw / dw);
+    const x3 = Math.round((dw - 1 + dx3) * sw / dw);
     const y1 = Math.round((1 + dy1) * sh / dh);
-    const y2 = Math.round((dh/2 + dy1) * sh / dh);
-    const y3 = Math.round((dh - 1 + dy2) * sh / dh);
+    const y2 = Math.round((dh/2 + (dy1+dy3)/2 + dy2) * sh / dh);
+    const y3 = Math.round((dh - 1 + dy3) * sh / dh);
 
     const dxLU = new Int32Array(sw);
     for (let sx = 0; sx < sw; sx++) {
@@ -135,8 +135,7 @@ function Resize(idata, sw, sh, dw, dh, subpixel) {
         for (let iter = 0; iter < 10; iter++) {
             const bestSum = shifts[6];
             for (let idx = 0; idx < 6; idx++) {
-                const m = (idx == 1 || idx == 4) ? 10 : 5;
-                for (let shift = -m; shift <= m; shift++) {
+                for (let shift = -5; shift <= 5; shift++) {
                     let newShifts = [...shifts];
                     newShifts[idx] = shift;
                     const resized = Downscale(idata, sw, sh, dw, dh,
