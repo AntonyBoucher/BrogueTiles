@@ -31,17 +31,21 @@ canvas {
     <li>Segoe UI Symbol</li>
 </ul>
 <p>Choose aspect ratio:
-    <span class="choice" onclick="generate(0)">Default</span>
+    <span class="choice" onclick="generate(0)">v1.8.3</span>
     <span class="choice" onclick="generate(1)">16:9</span>
     <span class="choice" onclick="generate(2)">16:10</span>
     <span class="choice" onclick="generate(3)">4:3</span>
+    <span class="choice" onclick="generate(4)">full-size</span>
 </p>
 <script>
 function generate(aspectratio) {
     let widths;
     let heights;
 
-    if (aspectratio == 1) { // 16:9
+    if (aspectratio == 4) { // maximum size
+        widths  = [128];
+        heights = [232];
+    } else if (aspectratio == 1) { // 16:9
         widths  = [ 7,  8,  9, 10, 11, 12, 13, 15, 16, 17, 19, 22, 25, 31, 38];
         heights = [11, 13, 14, 16, 18, 20, 22, 24, 26, 28, 31, 36, 42, 52, 63];
     } else if (aspectratio == 2) { // 16:10
@@ -86,7 +90,7 @@ function build(twidth, theight) {
         "`abcdefghijklmno",
         "pqrstuvwxyz{|}~ ",
         "⋅⸬◇⋏⥾☥♪○↑●⚲●⧲⧳  ",
-        "↑↓←→Δ∇Ωθλϟ♦⨯    ",
+        "↑↓←→Δ∇Ωθλϟ◆⨯    ",
         " ¡¢£¤¥¦§¨©ª«¬−®¯",
         "°±²³´µ¶·¸¹º»¼½¾¿",
         "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏ",
@@ -97,7 +101,7 @@ function build(twidth, theight) {
     for (let j = 0; j < 16; j++) {
         for (let i = 0; i < 16; i++) {
             let c = text[j][i];
-            let size = theight * 0.76;
+            let size = theight * 0.79;
             let width = twidth;
             let x = 0.5;
             let y = 0.8;
@@ -106,7 +110,7 @@ function build(twidth, theight) {
             let font = "Monaco";
             if ("ÐÝÞðýþ¼½¾@¹²³".includes(c)) {
                 font = "Noto Sans";
-            } else if ("⋅⸬◇⥾☥⚲⨯Δ∇".includes(c)) {
+            } else if ("⋅⸬◇◆⥾☥⚲⨯Δ∇".includes(c)) {
                 font = "Segoe UI Symbol";
             } else if ("⧲⧳".includes(c)) {
                 font = "Cambria";
@@ -118,8 +122,7 @@ function build(twidth, theight) {
             if (c == '⥾') { c = "♈︎"; size *= 0.8; width *= 0.9; }
             if (c == '☥') size *= 1.3;
             if (c == 'Ω' || c == '♪') size *= 1.2;
-            if (c == '◇') size *= 0.8;
-            if (c == '♦') size *= 0.85;
+            if (c == '◇' || c == '◆') size *= 0.8;
             if (c == 'ϟ') { y -= 0.15; size *= 1.1; }
             if (c == '⧲' || c == '⧳') y -= 0.1;
             if (c == '○' || c == '●' || c == '¿') y -= 0.065;
@@ -129,13 +132,15 @@ function build(twidth, theight) {
 
             // find the best sub-pixel alignment
             let best = [0, 0, 1e20];
-            for (let dx = -5; dx < 5; dx++) {
-                for (let dy = -5; dy < 5; dy++) {
-                    ctx.fillText(c, x*twidth+dx/10, y*theight+dy/10, width);
-                    let data = ctx.getImageData(0, 0, twidth, theight);
-                    let sum = data.data.reduce((a, b) => a + (b < 128 ? b : (255-b)));
-                    if (sum < best[2]) best = [dx, dy, sum];
-                    ctx.clearRect(0, 0, twidth*2, theight*2);
+            if (!(twidth === 128 && theight === 232)) {
+                for (let dx = -5; dx < 5; dx++) {
+                    for (let dy = -5; dy < 5; dy++) {
+                        ctx.fillText(c, x*twidth+dx/10, y*theight+dy/10, width);
+                        let data = ctx.getImageData(0, 0, twidth, theight);
+                        let sum = data.data.reduce((a, b) => a + (b < 128 ? b : (255-b)));
+                        if (sum < best[2]) best = [dx, dy, sum];
+                        ctx.clearRect(0, 0, twidth*2, theight*2);
+                    }
                 }
             }
 
@@ -145,8 +150,12 @@ function build(twidth, theight) {
                 ctx.fillRect(0, 0, twidth, theight);
                 ctx.fillStyle = (i+j)%2 ? "#009" : "#44c";
                 ctx.fillRect(0, theight*0.37, twidth, theight*0.43);
-                ctx.fillStyle = "white";
+            } else if (twidth === 128 && theight === 232) {
+                // solid background
+                ctx.fillStyle = "#000";
+                ctx.fillRect(0, 0, twidth, theight);
             }
+            ctx.fillStyle = "white";
 
             ctx.fillText(c, x*twidth+best[0]/10, y*theight+best[1]/10, width);
             ctx.putImageData(ctx.getImageData(0, 0, twidth, theight), i*twidth, j*theight);
