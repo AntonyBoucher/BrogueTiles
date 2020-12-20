@@ -23,13 +23,13 @@ canvas, img {
 <body>
 <p>This page uses a VERY SLOW algorithm for sharpening. Please be patient! It takes ~2 minutes to complete.</p>
 <p>Choose aspect ratio (sharp, slow):
-    <span class="choice" onclick="generate('default',true)">Default</span>
+    <span class="choice" onclick="generate('default',true)">v1.8.3</span>
     <span class="choice" onclick="generate('16:9',true)">16:9</span>
     <span class="choice" onclick="generate('16:10',true)">16:10</span>
     <span class="choice" onclick="generate('4:3',true)">4:3</span>
 </p>
 <p>Choose aspect ratio (blurry, fast):
-    <span class="choice" onclick="generate('default',false)">Default</span>
+    <span class="choice" onclick="generate('default',false)">v1.8.3</span>
     <span class="choice" onclick="generate('16:9',false)">16:9</span>
     <span class="choice" onclick="generate('16:10',false)">16:10</span>
     <span class="choice" onclick="generate('4:3',false)">4:3</span>
@@ -128,7 +128,7 @@ function Downscale(idata, sw, sh, dw, dh, dx1, dx2, dx3, dy1, dy2, dy3) {
 
 function Resize(idata, sw, sh, dw, dh, subpixel) {
     const step = 0.1; // pixels
-    let shifts = [0, 0, 0, 0, 0, 0, 1e20];
+    let shifts = [5, 0, 5, 5, 0, 5, 1e20];
 
     // search for the best displacements
     if (subpixel) {
@@ -257,7 +257,11 @@ function build(sizeIndex, aspectRatio, subPixelPositioning) {
     // resize tiles
     for (let r = 0; r < numRows; r++) {
         for (let c = 0; c < numCols; c++) {
-            const bigTile = sourceCtx.getImageData(c*sourceTileWidth, r*sourceTileHeight, sourceTileWidth, sourceTileHeight);
+            const bigTile = sourceCtx.getImageData(
+                Math.round(c*sourceTileWidth),
+                Math.round(r*sourceTileHeight),
+                Math.round(sourceTileWidth),
+                Math.round(sourceTileHeight));
             let targetWidth;
             let targetHeight;
             if (   r == 0 && (c == 2 || c == 4 || c == 6 || c == 10 || c == 11 || c == 12 || c == 13 || c == 14 || c == 15)
@@ -310,9 +314,9 @@ function build(sizeIndex, aspectRatio, subPixelPositioning) {
         }
     }
 
-    // floor
-    const noiseImgData = Noise(outputTileWidth, outputTileHeight);
-    //outputCtx.putImageData(noiseImgData, 2*outputTileWidth, 4*outputTileHeight);
+    // // floor
+    // const noiseImgData = Noise(outputTileWidth, outputTileHeight);
+    // outputCtx.putImageData(noiseImgData, 2*outputTileWidth, 4*outputTileHeight);
 
     // walls
     {
@@ -328,15 +332,15 @@ function build(sizeIndex, aspectRatio, subPixelPositioning) {
                 data[f(5, 1, x, y)+1] = 255;
                 data[f(5, 1, x, y)+2] = 255;
                 data[f(5, 1, x, y)+3] = value*255;
-                if (y < outputTileHeight/2) {
+                if (y < outputTileHeight/2 && data[f(0, 2, x, y)+3] == 0) {
                     data[f(0, 2, x, y)] = 255;
                     data[f(0, 2, x, y)+1] = 255;
                     data[f(0, 2, x, y)+2] = 255;
-                    data[f(0, 2, x, y)+3] = Math.max(value*255, data[f(0, 2, x, y)+3]);
+                    data[f(0, 2, x, y)+3] = value*255;
                     data[f(6, 4, x, y)] = 255;
                     data[f(6, 4, x, y)+1] = 255;
                     data[f(6, 4, x, y)+2] = 255;
-                    data[f(6, 4, x, y)+3] = Math.max(value*255, data[f(6, 4, x, y)+3]);
+                    data[f(6, 4, x, y)+3] = value*255;
                 }
             }
         }
